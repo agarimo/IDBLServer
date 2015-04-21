@@ -94,26 +94,26 @@ public class SqlTask {
     }
 
     private void procesaBoletines() throws SQLException {
-        String queryAppD = "insert into app.boletines_duplicados (codigo,fecha) select a.boe,a.fecha_publicacion from historico.temp_historico as a "
-                + "where exists "
-                + "(select codigo from app.boletines_insertados where app.boletines_insertados.codigo = a.boe and app.boletines_insertados.fecha = a.fecha_publicacion) group by boe";
+//        String queryAppD = "insert into app.boletines_duplicados (codigo,fecha) select a.boe,a.fecha_publicacion from historico.temp_historico as a "
+//                + "where exists "
+//                + "(select codigo from app.boletines_insertados where app.boletines_insertados.codigo = a.boe and app.boletines_insertados.fecha = a.fecha_publicacion) group by boe";
 
         String queryAppI = "insert into app.boletines_insertados (codigo,fecha) select a.boe,fecha_publicacion from historico.temp_historico as a "
                 + "where not exists "
                 + "(select codigo from app.boletines_insertados where app.boletines_insertados.codigo = a.boe and app.boletines_insertados.fecha = a.fecha_publicacion) group by boe";
 
-        String queryAppB = "delete from historico.temp_historico where exists "
-                + "(select codigo from app.boletines_duplicados where app.boletines_duplicados.codigo = boe and app.boletines_duplicados.fecha = fecha_publicacion)";
+//        String queryAppB = "delete from historico.temp_historico where exists "
+//                + "(select codigo from app.boletines_duplicados where app.boletines_duplicados.codigo = boe and app.boletines_duplicados.fecha = fecha_publicacion)";
 
         String query = "insert into historico.boletin (nBoe,origen,fechaPublicacion) select a.boe, b.idOrigen, a.fecha_publicacion from historico.temp_historico as a "
                 + "left join historico.origen as b on a.organismo=b.nombreOrigen where not exists "
                 + "(select nBoe from historico.boletin where historico.boletin.nBoe = a.boe) group by boe";
 
         bd = new Sql(Variables.con);
-        bd.ejecutar(queryAppD);
+//        bd.ejecutar(queryAppD);
         Variables.st.setBol_err(bd.getInt("select count(*) from app.boletines_duplicados"));
         Variables.st.setSan_err(bd.getInt("select count(*) from historico.temp_historico"));
-        bd.ejecutar(queryAppB);
+//        bd.ejecutar(queryAppB);
         bd.ejecutar(queryAppI);
         bd.ejecutar(query);
         Variables.st.setBol(bd.getInt("select count(*) from historico.boletin"));
@@ -148,12 +148,11 @@ public class SqlTask {
 
     private void procesaMultas() throws SQLException {
         String query = "insert into historico.multa (idBoletin,idMatricula,idSancionado,idSancion,fase,plazo,fechaEntrada,fechaVencimiento) "
-                + "select b.idBoletin,c.idVehiculo,d.idSancionado,a.codigoSancion,a.fase,a.plazo,CURDATE(),DATE_ADD(a.fecha_publicacion, interval a.plazo day) from historico.temp_historico as a"
-                + " left join historico.boletin as b on a.boe=b.nBoe "
+                + "select b.idBoletin,c.idVehiculo,d.idSancionado,a.codigoSancion,a.fase,a.plazo,CURDATE(),DATE_ADD(a.fecha_publicacion, interval a.plazo day) from historico.temp_historico as a "
+                + "Left join historico.boletin as b on a.boe=b.nBoe "
                 + "Left join historico.vehiculo as c on a.matricula=c.matricula "
-                + "Left join historico.sancionado as d on a.cif=d.nif ";
-//                + "where not exists (select codigoSancion from historico.sancion where historico.sancion.idSancion = a.codigoSancion)";
-        //TODO reactivar la sentencia de exclusión por existencia.
+                + "Left join historico.sancionado as d on a.cif=d.nif "
+                + "where not exists (select codigoSancion from historico.sancion where historico.sancion.idSancion = a.codigoSancion)";
         bd = new Sql(Variables.con);
         bd.ejecutar(query);
         bd.close();

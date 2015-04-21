@@ -12,9 +12,9 @@ public class main {
 
     public static void main(String[] args) {
         iniciaDatos();
-//        iniciaInsercion();
+        iniciaInsercion();
 //        iniciaAdmin();
-        iniciaApp();
+//        iniciaApp();
     }
 
     public static void iniciaDatos() {

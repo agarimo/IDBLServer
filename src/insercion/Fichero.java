@@ -32,7 +32,7 @@ public class Fichero extends Thread {
         this.pila = new ArrayList<>();
         this.split = new ArrayList<>();
         llenarPila(this.fichero);
-        splitPila();
+//        splitPila();
         llenarPila(this.fichero);
         Variables.tm.setSplit(Dates.curdate());
     }
@@ -85,7 +85,7 @@ public class Fichero extends Thread {
                 if (fichero1.getName().contains(".bb2") || fichero1.getName().contains(".bb1")) {
                     pila.add(fichero1);
                 } else if (fichero1.getName().contains(".big")) {
-                    split.add(fichero1);
+//                    split.add(fichero1);
                 } else {
                     Files.moverArchivo(fichero1, new File("dsc", fichero1.getName()));
                 }
