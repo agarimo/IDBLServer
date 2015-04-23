@@ -109,7 +109,7 @@ public class Fichero extends Thread {
         while (it.hasNext()) {
             aux = (File) it.next();
             try {
-                Files.splitArchivo(aux, destino, 1000, "bb2");
+                Files.splitArchivo(aux, destino, 50000, "bb2");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
             }
