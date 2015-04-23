@@ -32,7 +32,9 @@ public class Fichero extends Thread {
         this.pila = new ArrayList<>();
         this.split = new ArrayList<>();
         llenarPila(this.fichero);
-//        splitPila();
+        if (split.size() > 0) {
+            splitPila();
+        }
         llenarPila(this.fichero);
         Variables.tm.setSplit(Dates.curdate());
     }
@@ -85,7 +87,7 @@ public class Fichero extends Thread {
                 if (fichero1.getName().contains(".bb2") || fichero1.getName().contains(".bb1")) {
                     pila.add(fichero1);
                 } else if (fichero1.getName().contains(".big")) {
-//                    split.add(fichero1);
+                    split.add(fichero1);
                 } else {
                     Files.moverArchivo(fichero1, new File("dsc", fichero1.getName()));
                 }
@@ -107,7 +109,7 @@ public class Fichero extends Thread {
         while (it.hasNext()) {
             aux = (File) it.next();
             try {
-                Files.splitArchivo(aux, destino, 50000, "bb2");
+                Files.splitArchivo(aux, destino, 1000, "bb2");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -131,10 +133,10 @@ public class Fichero extends Thread {
         }
         activo = false;
     }
-    
+
     public void limpiarFichero() {
-        File fic=new File("data");
-        File destino= new File("trsh");
+        File fic = new File("data");
+        File destino = new File("trsh");
         destino.mkdirs();
         File[] ficheros = fic.listFiles();
 
@@ -142,10 +144,10 @@ public class Fichero extends Thread {
             if (fichero1.isDirectory()) {
                 llenarPila(fichero1);
             } else {
-               Files.moverDirectorio(fichero1,destino);
+                Files.moverDirectorio(fichero1, destino);
             }
         }
         Files.borraDirectorio(destino);
     }
-    
+
 }
