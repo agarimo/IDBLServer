@@ -32,8 +32,20 @@ public class InsercionC extends Thread {
         fichero.start();
         fichero.procesaFichero();
         sql = new SqlTask();
-        Files.borraDirectorio(new File("data"));
-        new File("data").mkdirs();
+        limpiar();
         win.dispose();
+    }
+
+    private void limpiar() {
+        File aux = new File("data");
+        File[] archivos = aux.listFiles();
+
+        for (File archivo : archivos) {
+            if (archivo.isDirectory()) {
+                Files.borraDirectorio(aux);
+            } else {
+                archivo.delete();
+            }
+        }
     }
 }

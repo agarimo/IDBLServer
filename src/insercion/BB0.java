@@ -136,7 +136,8 @@ public class BB0 {
         aux.setEuros(split[17].trim());
         aux.setPuntos(split[18].trim());
         aux.setLinea(split[23].trim());
-        aux.setLink(split[24].trim());
+        //aux.setLink(split[24].trim());
+        aux.setLink("");
 
         return aux;
     }

@@ -47,6 +47,8 @@ public class SqlTask {
         try {
             Variables.tm.setCarga(Dates.curdate());
             InsercionC.win.setIndeterminado(true);
+             InsercionC.win.setLabel("Preparando Datos");
+            limpiezaDatos();
             InsercionC.win.setLabel("Procesando Organismos");
             procesaOrganismos();
             Variables.tm.setOrganismos(Dates.curdate());
@@ -88,6 +90,13 @@ public class SqlTask {
             lg.escribeError("SQL", ex.getMessage());
             Logger.getLogger(SqlTask.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void limpiezaDatos() throws SQLException{
+        String query = "Delete from historico.temp_historico where codigoSancion in (Select idSancion from historico.multa)";
+        bd = new Sql(Variables.con);
+        bd.ejecutar(query);
+        bd.close();
     }
 
     private void procesaOrganismos() throws SQLException {
@@ -152,15 +161,13 @@ public class SqlTask {
     }
 
     private void procesaMultas() throws SQLException {
-        String queryLimpieza ="Delete from historico.temp_historico where codigoSancion in (Select idSancion from historico.sancion)";
         String query = "insert into historico.multa (idBoletin,idMatricula,idSancionado,idSancion,fase,plazo,fechaEntrada,fechaVencimiento) "
                 + "select b.idBoletin,c.idVehiculo,d.idSancionado,a.codigoSancion,a.fase,a.plazo,CURDATE(),DATE_ADD(a.fecha_publicacion, interval a.plazo day) from historico.temp_historico as a "
                 + "Left join historico.boletin as b on a.boe=b.nBoe "
                 + "Left join historico.vehiculo as c on a.matricula=c.matricula "
                 + "Left join historico.sancionado as d on a.cif=d.nif ";
-                //+ "where codigoSancion not in (select codigoSancion from historico.sancion where historico.sancion.idSancion = a.codigoSancion)";
+                //+ "where a.codigoSancion not in (select codigoSancion from historico.sancion where historico.sancion.idSancion = a.codigoSancion)";
         bd = new Sql(Variables.con);
-        bd.ejecutar(queryLimpieza);
         bd.ejecutar(query);
         bd.close();
     }

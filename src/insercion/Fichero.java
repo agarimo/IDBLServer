@@ -3,6 +3,7 @@ package insercion;
 import control.InsercionC;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -109,8 +110,10 @@ public class Fichero extends Thread {
         while (it.hasNext()) {
             aux = (File) it.next();
             try {
-                Files.splitArchivo(aux, destino, 50000, "bb2");
+                Files.splitFile(aux, destino, 50000, "bb2");
             } catch (FileNotFoundException ex) {
+                Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
             }
             aux.delete();
