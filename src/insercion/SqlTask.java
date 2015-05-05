@@ -1,6 +1,5 @@
 package insercion;
 
-import control.InsercionC;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,13 +27,11 @@ public class SqlTask {
         int bol, san;
         InsercionC.win.setIndeterminado(true);
         InsercionC.win.setLabel("Preparando Datos");
-        
+
         try {
             bd = new Sql(Variables.con);
-//            bol = bd.getInt("select count(*) from historico.boletin");
-//            san = bd.getInt("select count(*) from historico.sancion");
-            bol = 50000;
-            san = 50000;
+            bol = 0;
+            san = 0;
             bd.close();
 
             Variables.st = new Stats(Dates.curdate(), bol, san);
@@ -47,7 +44,7 @@ public class SqlTask {
         try {
             Variables.tm.setCarga(Dates.curdate());
             InsercionC.win.setIndeterminado(true);
-             InsercionC.win.setLabel("Preparando Datos");
+            InsercionC.win.setLabel("Preparando Datos");
             limpiezaDatos();
             InsercionC.win.setLabel("Procesando Organismos");
             procesaOrganismos();
@@ -91,9 +88,9 @@ public class SqlTask {
             Logger.getLogger(SqlTask.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void limpiezaDatos() throws SQLException{
-        String query = "Delete from historico.temp_historico where codigoSancion in (Select idSancion from historico.multa)";
+
+    private void limpiezaDatos() throws SQLException {
+        String query = "Delete from historico.temp_historico where codigoSancion in (Select codigoSancion from historico.sancion)";
         bd = new Sql(Variables.con);
         bd.ejecutar(query);
         bd.close();
@@ -108,29 +105,15 @@ public class SqlTask {
     }
 
     private void procesaBoletines() throws SQLException {
-//        String queryAppD = "insert into app.boletines_duplicados (codigo,fecha) select a.boe,a.fecha_publicacion from historico.temp_historico as a "
-//                + "where exists "
-//                + "(select codigo from app.boletines_insertados where app.boletines_insertados.codigo = a.boe and app.boletines_insertados.fecha = a.fecha_publicacion) group by boe";
-
-//        String queryAppI = "insert into app.boletines_insertados (codigo,fecha) select a.boe,fecha_publicacion from historico.temp_historico as a "
-//                + "where codigo not in "
-//                + "(select codigo from app.boletines_insertados where app.boletines_insertados.codigo = a.boe and app.boletines_insertados.fecha = a.fecha_publicacion) group by boe";
-
-//        String queryAppB = "delete from historico.temp_historico where exists "
-//                + "(select codigo from app.boletines_duplicados where app.boletines_duplicados.codigo = boe and app.boletines_duplicados.fecha = fecha_publicacion)";
-
         String query = "insert into historico.boletin (nBoe,origen,fechaPublicacion) select a.boe, b.idOrigen, a.fecha_publicacion from historico.temp_historico as a "
                 + "left join historico.origen as b on a.organismo=b.nombreOrigen where a.boe not in "
                 + "(select nBoe from historico.boletin where historico.boletin.nBoe = a.boe) group by boe";
 
         bd = new Sql(Variables.con);
-//        bd.ejecutar(queryAppD);
-        Variables.st.setBol_err(bd.getInt("select count(*) from app.boletines_duplicados"));
-        Variables.st.setSan_err(bd.getInt("select count(*) from historico.temp_historico"));
-//        bd.ejecutar(queryAppB);
-//        bd.ejecutar(queryAppI);
+        Variables.st.setBol_err(0);
+        Variables.st.setSan_err(0);
         bd.ejecutar(query);
-        Variables.st.setBol(bd.getInt("select count(*) from historico.boletin"));
+        Variables.st.setBol(0);
         bd.close();
     }
 
@@ -151,22 +134,21 @@ public class SqlTask {
     }
 
     private void procesaSanciones() throws SQLException {
-        String query = "insert into historico.sancion (idSancion,expediente,fechaMulta,articulo,cuantia,puntos,nombre,localidad,linea,link) "
-                + "select a.codigoSancion, a.expediente, a.fecha_multa, a.articulo, a.euros, a.puntos, a.nombre, a.poblacion, a.linea, a.link from historico.temp_historico as a "
-                + "where a.codigoSancion not in (select idSancion from historico.sancion where historico.sancion.idSancion = a.codigoSancion)";
+        String query = "insert into historico.sancion (codigoSancion,expediente,fechaMulta,articulo,cuantia,puntos,nombre,localidad,linea,link) "
+                + "select codigoSancion, expediente, fecha_multa, articulo, euros, puntos, nombre, poblacion, linea, link from historico.temp_historico";
         bd = new Sql(Variables.con);
         bd.ejecutar(query);
-        Variables.st.setSan(bd.getInt("select count(*) from historico.sancion"));
+        Variables.st.setSan(0);
         bd.close();
     }
 
     private void procesaMultas() throws SQLException {
         String query = "insert into historico.multa (idBoletin,idMatricula,idSancionado,idSancion,fase,plazo,fechaEntrada,fechaVencimiento) "
-                + "select b.idBoletin,c.idVehiculo,d.idSancionado,a.codigoSancion,a.fase,a.plazo,CURDATE(),DATE_ADD(a.fecha_publicacion, interval a.plazo day) from historico.temp_historico as a "
+                + "select b.idBoletin,c.idVehiculo,d.idSancionado,e.idSancion,a.fase,a.plazo,CURDATE(),DATE_ADD(a.fecha_publicacion, interval a.plazo day) from historico.temp_historico as a "
                 + "Left join historico.boletin as b on a.boe=b.nBoe "
                 + "Left join historico.vehiculo as c on a.matricula=c.matricula "
-                + "Left join historico.sancionado as d on a.cif=d.nif ";
-                //+ "where a.codigoSancion not in (select codigoSancion from historico.sancion where historico.sancion.idSancion = a.codigoSancion)";
+                + "Left join historico.sancionado as d on a.cif=d.nif "
+                + "Left join historico.sancion as e on a.codigoSancion=e.codigoSancion ";
         bd = new Sql(Variables.con);
         bd.ejecutar(query);
         bd.close();
@@ -175,7 +157,6 @@ public class SqlTask {
     private void limpiar() throws SQLException {
         bd = new Sql(Variables.con);
         bd.ejecutar("delete from historico.temp_historico");
-        bd.ejecutar("delete from app.boletines_duplicados");
         bd.close();
     }
 
@@ -183,7 +164,7 @@ public class SqlTask {
         Variables.tm.setStatus(ex);
         bd = new Sql(Variables.con);
         bd.ejecutar(aux.SQLCrear());
-        bd.ejecutar(Variables.st.SQLCrear());
+        //bd.ejecutar(Variables.st.SQLCrear());
         bd.close();
     }
 }

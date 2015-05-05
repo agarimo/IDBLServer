@@ -86,7 +86,7 @@ public class SqlIDBL {
                 multa.setBol(new Boletin(rs.getInt("idBoletin")));
                 multa.setVeh(new Vehiculo(rs.getInt("idMatricula")));
                 multa.setSan(new Sancionado(rs.getInt("idSancionado")));
-                multa.setSanc(new Sancion(rs.getString("idSancion")));
+                multa.setSanc(new Sancion(rs.getInt("idSancion")));
                 multa.setFase(rs.getString("fase"));
                 multa.setPlazo(rs.getInt("plazo"));
                 multa.setFechaEntrada(rs.getDate("fechaEntrada"));
@@ -120,7 +120,7 @@ public class SqlIDBL {
                 multa.getSan().setTipoJuridico(rs.getString("tipoJuridico"));
             }
 
-            rs = bd.ejecutarQueryRs("select * from historico.sancion where idSancion=" + Varios.entrecomillar(multa.getSanc().getIdSancion()));
+            rs = bd.ejecutarQueryRs("select * from historico.sancion where idSancion=" + multa.getSanc().getId());
 
             if (rs.next()) {
                 multa.getSanc().setExpediente(rs.getString("expediente"));

@@ -1,6 +1,6 @@
 package hilos;
 
-import control.InsercionC;
+import insercion.InsercionC;
 
 /**
  *

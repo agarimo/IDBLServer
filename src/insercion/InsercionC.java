@@ -1,7 +1,5 @@
-package control;
+package insercion;
 
-import insercion.Fichero;
-import insercion.SqlTask;
 import java.io.File;
 import main.Timming;
 import main.Variables;

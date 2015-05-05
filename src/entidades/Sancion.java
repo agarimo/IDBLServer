@@ -9,7 +9,8 @@ import java.util.Objects;
  */
 public final class Sancion {
 
-    String idSancion;
+    int id;
+    String codigoSancion;
     String expediente;
     Date fechaMulta;
     String articulo;
@@ -20,16 +21,17 @@ public final class Sancion {
     String linea;
     String link;
 
-    public Sancion(){
-        
-    }
-    
-    public Sancion(String id){
-        this.idSancion=id;
+    public Sancion() {
+
     }
 
-    public Sancion(String idSancion, String expediente, Date fechaMulta, String articulo, String cuantia, String puntos, String nombre, String localidad, String linea, String link) {
-        this.idSancion = idSancion;
+    public Sancion(int id) {
+        this.id = id;
+    }
+
+    public Sancion(int idSancion, String codigoSancion, String expediente, Date fechaMulta, String articulo, String cuantia, String puntos, String nombre, String localidad, String linea, String link) {
+        this.id = idSancion;
+        this.codigoSancion = codigoSancion;
         this.expediente = expediente;
         this.fechaMulta = fechaMulta;
         this.articulo = articulo;
@@ -41,12 +43,20 @@ public final class Sancion {
         this.link = link;
     }
 
-    public String getIdSancion() {
-        return idSancion;
+    public int getId() {
+        return id;
     }
 
-    public void setIdSancion(String idSancion) {
-        this.idSancion = idSancion;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCodigoSancion() {
+        return codigoSancion;
+    }
+
+    public void setCodigoSancion(String codigoSancion) {
+        this.codigoSancion = codigoSancion;
     }
 
     public String getExpediente() {
@@ -120,7 +130,6 @@ public final class Sancion {
     public void setLink(String link) {
         this.link = link;
     }
-    
 
     @Override
     public String toString() {
@@ -130,7 +139,7 @@ public final class Sancion {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.idSancion);
+        hash = 41 * hash + Objects.hashCode(this.codigoSancion);
         return hash;
     }
 
@@ -143,7 +152,7 @@ public final class Sancion {
             return false;
         }
         final Sancion other = (Sancion) obj;
-        if (!Objects.equals(this.idSancion, other.idSancion)) {
+        if (!Objects.equals(this.codigoSancion, other.codigoSancion)) {
             return false;
         }
         return true;
@@ -152,8 +161,8 @@ public final class Sancion {
     public String crearSancion() {
         String query;
         if (fechaMulta != null) {
-            query = "INSERT into historico.sancion (idSancion,expediente,fechaMulta,articulo,cuantia,puntos,nombre,localidad,linea,link) values("
-                    + util.Varios.entrecomillar(idSancion) + ","
+            query = "INSERT into historico.sancion (codigoSancion,expediente,fechaMulta,articulo,cuantia,puntos,nombre,localidad,linea,link) values("
+                    + util.Varios.entrecomillar(codigoSancion) + ","
                     + util.Varios.entrecomillar(expediente) + ","
                     + util.Varios.entrecomillar(util.Dates.imprimeFecha(fechaMulta)) + ","
                     + util.Varios.entrecomillar(articulo) + ","
@@ -165,8 +174,8 @@ public final class Sancion {
                     + util.Varios.entrecomillar(link)
                     + ");";
         } else {
-            query = "INSERT into historico.sancion (idSancion,expediente,articulo,cuantia,puntos,nombre,localidad,linea,link) values("
-                    + util.Varios.entrecomillar(idSancion) + ","
+            query = "INSERT into historico.sancion (codigoSancion,expediente,articulo,cuantia,puntos,nombre,localidad,linea,link) values("
+                    + util.Varios.entrecomillar(codigoSancion) + ","
                     + util.Varios.entrecomillar(expediente) + ","
                     + util.Varios.entrecomillar(articulo) + ","
                     + util.Varios.entrecomillar(cuantia) + ","
@@ -182,7 +191,6 @@ public final class Sancion {
 
     public String buscarSancion() {
         String query = "SELECT idSancion FROM historico.sancion WHERE expediente=" + util.Varios.entrecomillar(this.expediente) + ";";
-
         return query;
     }
-  }
+}

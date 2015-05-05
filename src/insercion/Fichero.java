@@ -1,6 +1,5 @@
 package insercion;
 
-import control.InsercionC;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class Fichero extends Thread {
         this.fichero = fichero;
         this.pila = new ArrayList<>();
         this.split = new ArrayList<>();
-        llenarPila(this.fichero);
+        llenarSplit(this.fichero);
         if (split.size() > 0) {
             splitPila();
         }
@@ -97,7 +96,21 @@ public class Fichero extends Thread {
         total = pila.size();
         contador = 0;
     }
+    
+    private void llenarSplit(File fichero) {
+        File[] ficheros = fichero.listFiles();
 
+        for (File fichero1 : ficheros) {
+            if (fichero1.isDirectory()) {
+                llenarPila(fichero1);
+            } else {
+                 if (fichero1.getName().contains(".big")) {
+                    split.add(fichero1);
+                } 
+            }
+        }
+    }
+    
     private void splitPila() {
         InsercionC.win.setTitulo("Preparando archivos");
         InsercionC.win.setLabel("...Spliteando Archivos...");
