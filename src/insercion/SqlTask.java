@@ -118,7 +118,7 @@ public class SqlTask {
     }
 
     private void procesaSancionados() throws SQLException {
-        String query = "insert into historico.sancionado (nif,tipoJuridico) select cif,tipoJuridico from historico.temp_historico where cif not in "
+        String query = "insert into historico.sancionado (nif,tipoJuridico,nombre) select cif,tipoJuridico,nombre from historico.temp_historico where cif not in "
                 + "(select cif from historico.sancionado where historico.sancionado.nif = historico.temp_historico.cif) group by cif";
         bd = new Sql(Variables.con);
         bd.ejecutar(query);

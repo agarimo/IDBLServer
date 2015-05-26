@@ -45,8 +45,8 @@ public class SqlIDBL {
 
         return list;
     }
-    
-    public static List<String> listaProductoA(String query,String column) {
+
+    public static List<String> listaProductoA(String query, String column) {
         List<String> list = new ArrayList();
         Sql bd;
         ResultSet rs;
@@ -69,6 +69,55 @@ public class SqlIDBL {
         }
 
         return list;
+    }
+
+    public static List<Sancionado> listaSancionado(String query) {
+        List<Sancionado> list = new ArrayList();
+        Sql bd;
+        ResultSet rs;
+        Sancionado aux;
+
+        try {
+            bd = new Sql(Variables.con);
+            rs = bd.ejecutarQueryRs(query);
+
+            while (rs.next()) {
+                aux = new Sancionado(rs.getInt("idSancionado"), rs.getString("nif"), rs.getString("tipoJuridico"), rs.getString("nombre"));
+                list.add(aux);
+            }
+
+            rs.close();
+            bd.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SqlIDBL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
+    
+    public static String getNombre(String nif) {
+        Sql bd;
+        ResultSet rs;
+        String aux = null;
+        String query="select nombre from historico.temp_multas where nif="+Varios.entrecomillar(nif)+" limit 1;";
+
+        try {
+            bd = new Sql(Variables.con);
+            rs = bd.ejecutarQueryRs(query);
+
+            while (rs.next()) {
+                aux=rs.getString("nombre");
+            }
+
+            rs.close();
+            bd.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SqlIDBL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return aux;
     }
 
     public static MultaS cargaMultaS(String aux) {

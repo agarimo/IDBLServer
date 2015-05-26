@@ -12,7 +12,13 @@ public class main {
 
     public static void main(String[] args) {
         iniciaDatos();
-        iniciaInsercion();
+        Fixer a = new Fixer(100000);
+
+        for (int i = 0; i < 10; i++) {
+            a.run();
+        }
+
+//        iniciaInsercion();
 //        iniciaAdmin();
 //        iniciaApp();
     }
@@ -22,15 +28,15 @@ public class main {
     }
 
     public static void iniciaInsercion() {
-        HiloInsercion i=new HiloInsercion();
+        HiloInsercion i = new HiloInsercion();
         i.start();
     }
 
     public static void iniciaAdmin() {
-        AdminC c=new AdminC();
+        AdminC c = new AdminC();
     }
-    
-    public static void iniciaApp(){
-        ClientC c=new ClientC();
+
+    public static void iniciaApp() {
+        ClientC c = new ClientC();
     }
 }

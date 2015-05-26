@@ -1,5 +1,6 @@
 package entidades;
 
+import util.Varios;
 
 /**
  *
@@ -10,20 +11,23 @@ public class Sancionado {
     int id;
     String nif;
     String tipoJuridico;
-    
-    public Sancionado(int id){
-        this.id=id;
+    String nombre;
+
+    public Sancionado(int id) {
+        this.id = id;
     }
 
-    public Sancionado(String nif, String tipoJuridico) {
+    public Sancionado(String nif, String tipoJuridico, String nombre) {
         this.nif = nif;
         this.tipoJuridico = tipoJuridico;
+        this.nombre = nombre;
     }
 
-    public Sancionado(int id, String nif, String tipoJuridico) {
+    public Sancionado(int id, String nif, String tipoJuridico, String nombre) {
         this.id = id;
         this.nif = nif;
         this.tipoJuridico = tipoJuridico;
+        this.nombre = nombre;
     }
 
     public int getId() {
@@ -33,7 +37,7 @@ public class Sancionado {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public String getNif() {
         return nif;
     }
@@ -50,18 +54,34 @@ public class Sancionado {
         this.tipoJuridico = tipoJuridico;
     }
 
-    public String crearSancionado() {
-        String query = "INSERT into historico.sancionado (nif,nombre,tipoJuridico,localidad) values("
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String SQLCrear() {
+        String query = "INSERT into historico.sancionado (nif,nombre,tipoJuridico,nombre) values("
                 + util.Varios.entrecomillar(nif) + ","
-                + util.Varios.entrecomillar(tipoJuridico)
+                + util.Varios.entrecomillar(tipoJuridico) + ","
+                + util.Varios.entrecomillar(nombre)
                 + ");";
 
         return query;
     }
-    
-    public String buscarSancionado(){
-        String query="SELECT idSancionado FROM historico.sancionado WHERE nif="+util.Varios.entrecomillar(nif)+";";
-        
+
+    public String SQLBuscar() {
+        String query = "SELECT idSancionado FROM historico.sancionado WHERE nif=" + util.Varios.entrecomillar(nif) + ";";
+
+        return query;
+    }
+
+    public String SQLEditarNombre() {
+        String query = "UPDATE historico.sancionado SET "
+                + "nombre=" + Varios.entrecomillar(nombre) + " "
+                + "WHERE idSancionado=" + id;
         return query;
     }
 
