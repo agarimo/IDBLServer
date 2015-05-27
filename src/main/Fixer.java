@@ -49,7 +49,7 @@ public class Fixer {
                 Logger.getLogger(Fixer.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            System.out.println("------"+aux+"------");
+            System.out.println(main.contador+"------"+aux+"------");
             aux--;
         }
     }

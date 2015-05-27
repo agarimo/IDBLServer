@@ -9,12 +9,15 @@ import hilos.HiloInsercion;
  * @author Agarimo
  */
 public class main {
+    
+    public static int contador;
 
     public static void main(String[] args) {
         iniciaDatos();
         Fixer a = new Fixer(100000);
 
         for (int i = 0; i < 10; i++) {
+            contador=10-i;
             a.run();
         }
 
