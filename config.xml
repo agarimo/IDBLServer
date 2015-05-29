@@ -2,7 +2,7 @@
 
 <config>
     <conexion>
-        <db-host>oficina.redcedeco.net</db-host>
+        <db-host>localhost</db-host>
         <db-port>3306</db-port>
         <db-username>admin</db-username>
         <db-password>IkuinenK@@m.s84</db-password>

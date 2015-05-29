@@ -122,7 +122,7 @@ public class BB0 {
         aux.setCodigoSancion(split[2].trim()+split[8].trim());
         aux.setFechaPublicacion(util.Dates.formatFecha(split[1].trim(), "dd/MM/yyyy"));
         aux.setOrganismo(split[16].trim());
-        aux.setBoe(split[2].trim());
+        aux.setBoe(split[2].trim()+split[22].trim());
         aux.setFase(split[3]);
         aux.setTipoJuridico(split[4].trim());
         aux.setPlazo(Integer.parseInt(split[5]));
@@ -136,8 +136,7 @@ public class BB0 {
         aux.setEuros(split[17].trim());
         aux.setPuntos(split[18].trim());
         aux.setLinea(split[23].trim());
-        //aux.setLink(split[24].trim());
-        aux.setLink("");
+        aux.setLink(split[24].trim());
 
         return aux;
     }

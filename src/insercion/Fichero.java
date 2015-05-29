@@ -21,6 +21,7 @@ public class Fichero extends Thread {
     private final File fichero;
     private final List<File> pila;
     private final List<File> split;
+//    private final List<File> validador;
     private BB0 archivo;
     private int total;
     private int contador;
@@ -86,8 +87,6 @@ public class Fichero extends Thread {
             } else {
                 if (fichero1.getName().contains(".bb2") || fichero1.getName().contains(".bb1")) {
                     pila.add(fichero1);
-                } else if (fichero1.getName().contains(".big")) {
-                    split.add(fichero1);
                 } else {
                     Files.moverArchivo(fichero1, new File("dsc", fichero1.getName()));
                 }
@@ -109,6 +108,20 @@ public class Fichero extends Thread {
                 } 
             }
         }
+    }
+    
+    private void llenarValidador(File fichero){
+       File[] ficheros = fichero.listFiles();
+
+        for (File fichero1 : ficheros) {
+            if (fichero1.isDirectory()) {
+                llenarPila(fichero1);
+            } else {
+                 if (fichero1.getName().contains(".bb0")) {
+                    split.add(fichero1);
+                } 
+            }
+        } 
     }
     
     private void splitPila() {
