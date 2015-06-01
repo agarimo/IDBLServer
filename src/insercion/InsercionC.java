@@ -40,7 +40,7 @@ public class InsercionC extends Thread {
 
         for (File archivo : archivos) {
             if (archivo.isDirectory()) {
-                Files.borraDirectorio(aux);
+                Files.borraDirectorio(archivo);
             } else {
                 archivo.delete();
             }

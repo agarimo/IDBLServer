@@ -101,7 +101,7 @@ public class Fichero extends Thread {
 
         for (File fichero1 : ficheros) {
             if (fichero1.isDirectory()) {
-                llenarPila(fichero1);
+                llenarSplit(fichero1);
             } else {
                  if (fichero1.getName().contains(".big")) {
                     split.add(fichero1);
@@ -115,10 +115,10 @@ public class Fichero extends Thread {
 
         for (File fichero1 : ficheros) {
             if (fichero1.isDirectory()) {
-                llenarPila(fichero1);
+//                llenarPila(fichero1);
             } else {
                  if (fichero1.getName().contains(".bb0")) {
-                    split.add(fichero1);
+//                    split.add(fichero1);
                 } 
             }
         } 
@@ -136,7 +136,7 @@ public class Fichero extends Thread {
         while (it.hasNext()) {
             aux = (File) it.next();
             try {
-                Files.splitFile(aux, destino, 50000, "bb2");
+                Files.splitFile(aux, destino, 50000, "bb1");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -162,21 +162,4 @@ public class Fichero extends Thread {
         }
         activo = false;
     }
-
-    public void limpiarFichero() {
-        File fic = new File("data");
-        File destino = new File("trsh");
-        destino.mkdirs();
-        File[] ficheros = fic.listFiles();
-
-        for (File fichero1 : ficheros) {
-            if (fichero1.isDirectory()) {
-                llenarPila(fichero1);
-            } else {
-                Files.moverDirectorio(fichero1, destino);
-            }
-        }
-        Files.borraDirectorio(destino);
-    }
-
 }
