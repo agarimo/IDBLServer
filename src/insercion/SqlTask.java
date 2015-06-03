@@ -70,8 +70,9 @@ public class SqlTask {
             procesaMultas();
             Variables.tm.setMultas(Dates.curdate());
             InsercionC.win.setTitulo("Completado 100%");
-            InsercionC.win.setFin();
+            InsercionC.win.setLabel("Limpiando BBDD");
             limpiar();
+            InsercionC.win.setFin();
             Variables.tm.setTotal(Dates.curdate());
             procesaTimmingStats(Variables.tm, "OK");
             Variables.tm = null;
@@ -157,6 +158,11 @@ public class SqlTask {
     private void limpiar() throws SQLException {
         bd = new Sql(Variables.con);
         bd.ejecutar("delete from historico.temp_historico");
+//        bd.ejecutar("delete from historico.multa where fechaVencimiento >= DATE_SUB(CURDATE(), INTERVAL 2 YEAR)");
+//        bd.ejecutar("delete from historico.boletin where idBoletin not in (select idBoletin from historico.multa)");
+//        bd.ejecutar("delete from historico.sancion where idSancion not in (select idSancion from historico.multa)");
+//        bd.ejecutar("delete from historico.sancionado where idSancionadio not in (select idSancionado from historico.multa)");
+//        bd.ejecutar("delete from historico.vehiculo where idVehiculo not in (select idMatricula from historico.multa)");
         bd.close();
     }
 

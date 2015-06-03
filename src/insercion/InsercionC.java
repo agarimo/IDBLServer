@@ -35,6 +35,7 @@ public class InsercionC extends Thread {
     }
 
     private void limpiar() {
+        File block = new File ("block.blk");
         File aux = new File("data");
         File[] archivos = aux.listFiles();
 
@@ -45,5 +46,6 @@ public class InsercionC extends Thread {
                 archivo.delete();
             }
         }
+        block.delete();
     }
 }
