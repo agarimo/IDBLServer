@@ -1,5 +1,6 @@
 package main;
 
+import DBFix.*;
 import control.AdminC;
 import control.ClientC;
 import hilos.HiloInsercion;
@@ -21,16 +22,28 @@ public class main {
 
     public static void main(String[] args) {
         iniciaDatos();
-//        Fixer a = new Fixer(100000);
-//
-//        for (int i = 0; i < 10; i++) {
-//            contador=10-i;
-//            a.run();
-//        }
-
         iniciaInsercion();
+
 //        iniciaAdmin();
 //        iniciaApp();
+    }
+
+    public static void FixNames() {
+        FixerNames a = new FixerNames(100000);
+
+        for (int i = 0; i < 10; i++) {
+            contador = 10 - i;
+            a.run();
+        }
+    }
+
+    public static void FixNie() {
+        FixerNie a = new FixerNie(10000);
+        
+        for (int i = 0; i < 10; i++) {
+            contador = 10 - i;
+            a.run();
+        }
     }
 
     public static void iniciaDatos() {

@@ -84,6 +84,13 @@ public class Sancionado {
                 + "WHERE idSancionado=" + id;
         return query;
     }
+    
+    public String SQLEditarNif(){
+        String query = "UPDATE historico.sancionado SET "
+                + "nif=" + Varios.entrecomillar(nif) + " "
+                + "WHERE idSancionado=" + id;
+        return query;
+    }
 
     @Override
     public String toString() {
