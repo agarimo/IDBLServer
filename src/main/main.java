@@ -24,8 +24,6 @@ public class main {
         iniciaDatos();
         iniciaInsercion();
 
-//        iniciaAdmin();
-//        iniciaApp();
     }
 
     public static void FixNames() {
