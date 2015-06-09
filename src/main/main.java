@@ -23,7 +23,7 @@ public class main {
     public static void main(String[] args) {
         iniciaDatos();
         iniciaInsercion();
-
+        
     }
 
     public static void FixNames() {
@@ -36,7 +36,7 @@ public class main {
     }
 
     public static void FixNie() {
-        FixerNie a = new FixerNie(10000);
+        FixerNie a = new FixerNie(100000);
         
         for (int i = 0; i < 10; i++) {
             contador = 10 - i;

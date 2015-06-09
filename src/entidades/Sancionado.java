@@ -87,6 +87,7 @@ public class Sancionado {
     
     public String SQLEditarNif(){
         String query = "UPDATE historico.sancionado SET "
+                + "control="+1+" ,"
                 + "nif=" + Varios.entrecomillar(nif) + " "
                 + "WHERE idSancionado=" + id;
         return query;
