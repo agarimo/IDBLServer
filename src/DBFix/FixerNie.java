@@ -43,12 +43,17 @@ public class FixerNie {
         while(it.hasNext()){
             san=(Sancionado) it.next();
             System.out.println(san.getNif());
-            san.setNif(cal.calcular(san.getNif()));
+            
+            if(san.getNif().length()>9){
+                san.setNif(san.getNif().substring(0, 9));
+            }else{
+                san.setNif(cal.calcular(san.getNif()));
+            }
             System.out.println(san.getNif());
             
             try {
                 bd= new Sql(Variables.con);
-                bd.ejecutar(san.SQLEditarNif());
+//                bd.ejecutar(san.SQLEditarNif());
                 bd.close();
             } catch (SQLException ex) {
                 Logger.getLogger(FixerNames.class.getName()).log(Level.SEVERE, null, ex);
