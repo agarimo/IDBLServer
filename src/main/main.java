@@ -1,8 +1,6 @@
 package main;
 
 import DBFix.*;
-import control.AdminC;
-import control.ClientC;
 import hilos.HiloInsercion;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +22,7 @@ public class main {
         iniciaDatos();
         iniciaInsercion();
     }
-
+    
     public static void FixNames() {
         FixerNames a = new FixerNames(100000);
 
@@ -62,13 +60,5 @@ public class main {
                 Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    public static void iniciaAdmin() {
-        AdminC c = new AdminC();
-    }
-
-    public static void iniciaApp() {
-        ClientC c = new ClientC();
     }
 }
