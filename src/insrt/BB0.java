@@ -1,6 +1,6 @@
-package insercion;
+package insrt;
 
-import entidades.Temporal;
+import enty.Temporal;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,16 +1,14 @@
-package hilos;
-
-import insercion.InsercionC;
+package insrt;
 
 /**
  *
  * @author Agarimo
  */
-public class HiloInsercion extends Thread {
+public class Insercion extends Thread {
     InsercionC i;
     
     
-    public HiloInsercion(){
+    public Insercion(){
         i=new InsercionC();
     }
     

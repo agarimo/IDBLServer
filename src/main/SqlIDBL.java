@@ -1,11 +1,11 @@
 package main;
 
-import entidades.Boletin;
-import entidades.MultaS;
-import entidades.Sancion;
-import entidades.Sancionado;
-import entidades.Vehiculo;
-import entidades.VistaMulta;
+import enty.Boletin;
+import enty.MultaS;
+import enty.Sancion;
+import enty.Sancionado;
+import enty.Vehiculo;
+import enty.VistaMulta;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

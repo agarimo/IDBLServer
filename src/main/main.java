@@ -1,7 +1,7 @@
 package main;
 
 import DBFix.*;
-import hilos.HiloInsercion;
+import insrt.Insercion;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -22,24 +22,6 @@ public class main {
         iniciaDatos();
         iniciaInsercion();
     }
-    
-    public static void FixNames() {
-        FixerNames a = new FixerNames(100000);
-
-        for (int i = 0; i < 10; i++) {
-            contador = 10 - i;
-            a.run();
-        }
-    }
-
-    public static void FixNie() {
-        FixerNie a = new FixerNie(100000);
-        
-        for (int i = 0; i < 10; i++) {
-            contador = 10 - i;
-            a.run();
-        }
-    }
 
     public static void iniciaDatos() {
         Variables.iniciaVariables();
@@ -54,11 +36,29 @@ public class main {
             try {
                 block.createNewFile();
                 Files.escribeArchivo(block, System.getProperty("user.name") + "-" + Dates.imprimeFechaCompleta(Dates.curdate()));
-                HiloInsercion i = new HiloInsercion();
+                Insercion i = new Insercion();
                 i.start();
             } catch (IOException ex) {
                 Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    public static void FixNames() {
+        FixerNames a = new FixerNames(100000);
+
+        for (int i = 0; i < 10; i++) {
+            contador = 10 - i;
+            a.run();
+        }
+    }
+
+    public static void FixNie() {
+        FixerNie a = new FixerNie(100000);
+
+        for (int i = 0; i < 10; i++) {
+            contador = 10 - i;
+            a.run();
         }
     }
 }

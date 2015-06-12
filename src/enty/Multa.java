@@ -1,4 +1,4 @@
-package entidades;
+package enty;
 
 import java.util.Calendar;
 import java.util.Date;

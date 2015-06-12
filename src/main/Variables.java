@@ -2,6 +2,7 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +11,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import val.Fase;
 
 /**
  *
@@ -20,6 +22,8 @@ public class Variables {
     public static Conexion con;
     public static Timming tm;
     public static Stats st;
+    public static List<Fase> listFases;
+    public static List<String> listArt;
 
     public static void iniciaVariables() {
         driver();

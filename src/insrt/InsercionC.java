@@ -1,4 +1,4 @@
-package insercion;
+package insrt;
 
 import java.io.File;
 import main.Timming;

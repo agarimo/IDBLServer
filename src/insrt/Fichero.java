@@ -1,8 +1,9 @@
-package insercion;
+package insrt;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.logging.Logger;
 import main.Variables;
 import util.Dates;
 import util.Files;
+import val.Validador;
 
 /**
  *
@@ -21,7 +23,7 @@ public class Fichero extends Thread {
     private final File fichero;
     private final List<File> pila;
     private final List<File> split;
-//    private final List<File> validador;
+    private final List<File> validador;
     private BB0 archivo;
     private int total;
     private int contador;
@@ -32,9 +34,14 @@ public class Fichero extends Thread {
         this.fichero = fichero;
         this.pila = new ArrayList<>();
         this.split = new ArrayList<>();
+        this.validador = new ArrayList<>();
         llenarSplit(this.fichero);
         if (split.size() > 0) {
             splitPila();
+        }
+        llenarValidador(this.fichero);
+        if (validador.size() > 0) {
+            validaPila();
         }
         llenarPila(this.fichero);
         Variables.tm.setSplit(Dates.curdate());
@@ -85,7 +92,7 @@ public class Fichero extends Thread {
             if (fichero1.isDirectory()) {
                 llenarPila(fichero1);
             } else {
-                if (fichero1.getName().contains(".bb2") || fichero1.getName().contains(".bb1")) {
+                if (fichero1.getName().contains(".bb2")) {
                     pila.add(fichero1);
                 } else {
                     Files.moverArchivo(fichero1, new File("dsc", fichero1.getName()));
@@ -95,7 +102,7 @@ public class Fichero extends Thread {
         total = pila.size();
         contador = 0;
     }
-    
+
     private void llenarSplit(File fichero) {
         File[] ficheros = fichero.listFiles();
 
@@ -103,27 +110,27 @@ public class Fichero extends Thread {
             if (fichero1.isDirectory()) {
                 llenarSplit(fichero1);
             } else {
-                 if (fichero1.getName().contains(".big")) {
+                if (fichero1.getName().contains(".big")) {
                     split.add(fichero1);
-                } 
+                }
             }
         }
     }
-    
-    private void llenarValidador(File fichero){
-       File[] ficheros = fichero.listFiles();
+
+    private void llenarValidador(File fichero) {
+        File[] ficheros = fichero.listFiles();
 
         for (File fichero1 : ficheros) {
             if (fichero1.isDirectory()) {
-//                llenarPila(fichero1);
+                llenarValidador(fichero1);
             } else {
-                 if (fichero1.getName().contains(".bb0")) {
-//                    split.add(fichero1);
-                } 
+                if (fichero1.getName().contains(".bb1")) {
+                    validador.add(fichero1);
+                }
             }
-        } 
+        }
     }
-    
+
     private void splitPila() {
         InsercionC.win.setTitulo("Preparando archivos");
         InsercionC.win.setLabel("...Spliteando Archivos...");
@@ -137,16 +144,34 @@ public class Fichero extends Thread {
             aux = (File) it.next();
             try {
                 Files.splitFile(aux, destino, 50000, "bb1");
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
+                aux.delete();
             } catch (IOException ex) {
                 Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
             }
-            aux.delete();
         }
         InsercionC.win.setIndeterminado(false);
         pila.clear();
 
+    }
+
+    private void validaPila() {
+        InsercionC.win.setTitulo("Preparando archivos");
+        InsercionC.win.setLabel("...Validando Archivos...");
+        InsercionC.win.setIndeterminado(true);
+
+        Validador val;
+        File aux;
+        Iterator it = validador.iterator();
+
+        while (it.hasNext()) {
+            aux = (File) it.next();
+            try {
+                val = new Validador(aux);
+                aux.delete();
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private void procesar() {

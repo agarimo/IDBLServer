@@ -1,4 +1,4 @@
-package entidades;
+package enty;
 
 import util.Varios;
 
