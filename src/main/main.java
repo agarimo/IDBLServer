@@ -20,7 +20,7 @@ public class main {
 
     public static void main(String[] args) {
         iniciaDatos();
-        iniciaInsercion();
+//        iniciaInsercion();
     }
 
     public static void iniciaDatos() {
