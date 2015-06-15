@@ -1,7 +1,6 @@
 package insrt;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,6 +42,7 @@ public class Fichero extends Thread {
         if (validador.size() > 0) {
             validaPila();
         }
+        
         llenarPila(this.fichero);
         Variables.tm.setSplit(Dates.curdate());
     }
