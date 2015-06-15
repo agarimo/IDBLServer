@@ -172,6 +172,9 @@ public class Fichero extends Thread {
                 Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        InsercionC.win.setIndeterminado(false);
+        validador.clear();
     }
 
     private void procesar() {
